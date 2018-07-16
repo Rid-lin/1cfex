@@ -15,8 +15,8 @@ import (
 )
 
 var configExample = `# Порядок не имеет значения
-login_FTP = kust
-pass_FTP = qazwsx
+login_FTP = login
+pass_FTP = password
 Path = /srv/1cv8/uat/
 local_path = C:/ftpswap/LocalObmenUAT/
 server = 10.57.254.103:21
@@ -54,7 +54,7 @@ func intro() {
 
 //LoadConfig - Load config
 func (s *ConfigAttr) LoadConfig(nameFile string) {
-	fmt.Printf("%v Загружаю список серверов из %v", time.Now().Format("15:04:05"), nameFile)
+	fmt.Printf("%v Загружаю настройки из %v", time.Now().Format("15:04:05"), nameFile)
 	cfg, err := ini.Load(nameFile)
 	if err != nil {
 		fmt.Printf("\nОшибка чтения конфигурационного файла: %v", err)
@@ -142,7 +142,7 @@ func checkDownloadedFile(c *ftp.ServerConn, Path, FileIn, LocalPath string) (int
 	fmt.Printf("%v Проверяю файл ", time.Now().Format("15:04:05"))
 	diff, err := GetDiffFilesSize(c, Path+FileIn, LocalPath+FileIn+".tmp")
 	if err != nil {
-		fmt.Printf("не удалось: %v\n", err)
+		fmt.Printf("... не удалось.\n %v\n", err)
 		return 6, err
 	}
 	if diff != 0 {
@@ -217,7 +217,7 @@ func checkUploadedFile(c *ftp.ServerConn, Path, FileOut, LocalPath string) (int,
 	fmt.Printf("%v Проверяю файл ", time.Now().Format("15:04:05"))
 	diff, err := GetDiffFilesSize(c, Path+FileOut, LocalPath+FileOut)
 	if err != nil {
-		fmt.Printf("не удалось: %v\n", err)
+		fmt.Printf("... не удалось.\n %v\n", err)
 		return 6, err
 	}
 	if diff != 0 {
@@ -227,6 +227,8 @@ func checkUploadedFile(c *ftp.ServerConn, Path, FileOut, LocalPath string) (int,
 			return 6, err
 		}
 	}
+	fmt.Printf("\t...\tOK\n")
+
 	return 0, nil
 }
 
