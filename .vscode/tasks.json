@@ -1,0 +1,39 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo Hello"
+        },
+        {
+            "label": "go: build",
+            "type": "shell",
+            "command": "C:/Go/bin/go.exe build -i ${file}",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "go: run",
+            "type": "shell",
+            "command": "C:/Go/bin/go.exe run ${file}",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "onecswap: pack",
+            "type": "shell",
+            "command": "C:/Users/Root/Go/src/OnecSwap/upx.exe --ultra-brute onecswap.exe",
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            }
+        }
+    ]
+}
