@@ -14,7 +14,8 @@ import (
 	pb "gopkg.in/cheggaaa/pb.v1"
 )
 
-var configExample = `# Порядок не имеет значения
+var configExample = `#Пример конфигурационного файла
+# Порядок не имеет значения
 login_FTP = login
 pass_FTP = password
 Path = /srv/1cv8/uat/
@@ -52,9 +53,15 @@ func intro() {
 `)
 }
 
+//PrinT - Custom Printf with time
+func PrinT(format string, args ...interface{}) {
+	fmt.Printf(time.Now().Format("15:04:04") + " " + fmt.Sprintf(format, args...))
+}
+
 //LoadConfig - Load config
 func (s *ConfigAttr) LoadConfig(nameFile string) {
-	fmt.Printf("%v Загружаю настройки из %v", time.Now().Format("15:04:05"), nameFile)
+	PrinT("Загружаю настройки из %v", nameFile)
+	// fmt.Printf("%v Загружаю настройки из %v", time.Now().Format("15:04:05"), nameFile)
 	cfg, err := ini.Load(nameFile)
 	if err != nil {
 		fmt.Printf("\nОшибка чтения конфигурационного файла: %v", err)
@@ -73,7 +80,8 @@ func (s *ConfigAttr) LoadConfig(nameFile string) {
 // ConnectToFTP Connect, Login, change DIR
 func ConnectToFTP(ServerPort, Login, Password, Path string) (c *ftp.ServerConn) {
 	// Подключаюсь к серверу
-	fmt.Printf("%v Устанавливаю соедиение с сервером %s, авторизуюсь, меняю папку ", time.Now().Format("15:04:05"), ServerPort)
+	PrinT("Устанавливаю соедиение с сервером %s, авторизуюсь, меняю папку ", ServerPort)
+	// fmt.Printf("%v Устанавливаю соедиение с сервером %s, авторизуюсь, меняю папку ", time.Now().Format("15:04:05"), ServerPort)
 	c, err = ftp.Dial(ServerPort)
 	if err != nil {
 		fmt.Printf("не удалось\n %v \n", err)
@@ -106,7 +114,8 @@ func DownloadFileFromFTP(c *ftp.ServerConn, Path, LocalPath, FileIn string) (cod
 	if err != nil {
 		return 2, err
 	}
-	fmt.Printf("%v Скачиваю файл %s \n", time.Now().Format("15:04:05"), Path+FileIn)
+	PrinT("Скачиваю файл %s \n", Path+FileIn)
+	// fmt.Printf("%v Скачиваю файл %s \n", time.Now().Format("15:04:05"), Path+FileIn)
 
 	// Создаю файл для хранения
 	dest, err := os.Create(LocalPath + FileIn + ".tmp")
@@ -132,6 +141,7 @@ func DownloadFileFromFTP(c *ftp.ServerConn, Path, LocalPath, FileIn string) (cod
 	return 0, nil
 }
 
+//checkDownloadedFile check downloaded file from FTP
 func checkDownloadedFile(c *ftp.ServerConn, Path, FileIn, LocalPath string) (int, error) {
 	//-----------------------------------------
 	/*Сравниваю размеры удаленного и локального файлов.
@@ -139,14 +149,16 @@ func checkDownloadedFile(c *ftp.ServerConn, Path, FileIn, LocalPath string) (int
 	Если они не равны, выдаём ошибку , удаляем временный файл
 	*/
 	// Получаю информацию о локальном файле
-	fmt.Printf("%v Проверяю файл ", time.Now().Format("15:04:05"))
+	PrinT("Проверяю файл ")
+	// fmt.Printf("%v Проверяю файл ", time.Now().Format("15:04:05"))
 	diff, err := GetDiffFilesSize(c, Path+FileIn, LocalPath+FileIn+".tmp")
 	if err != nil {
 		fmt.Printf("... не удалось.\n %v\n", err)
 		return 6, err
 	}
 	if diff != 0 {
-		fmt.Printf("%v \nФайлы не совпадают. Удаляю временный файл.", time.Now().Format("15:04:05"))
+		PrinT("\nФайлы не совпадают. Удаляю временный файл.")
+		// fmt.Printf("%v \nФайлы не совпадают. Удаляю временный файл.", time.Now().Format("15:04:05"))
 		if err := os.Remove(LocalPath + FileIn + ".tmp"); err != nil {
 			fmt.Printf("Не удалось удалить %v : %v\n Удалите файл в ручную.", LocalPath+FileIn+".tmp", err)
 			return 6, err
@@ -167,15 +179,19 @@ func checkDownloadedFile(c *ftp.ServerConn, Path, FileIn, LocalPath string) (int
 func UploadFileToFTP(c *ftp.ServerConn, Path, LocalPath, FileOut string) (codeExit int, err error) {
 	//Проверяю существование файла на локальном ПК
 	if _, err := os.Stat(LocalPath + FileOut); os.IsNotExist(err) {
-		fmt.Printf("%v Нет локально файла, нечего выгружать \n", time.Now().Format("15:04:05"))
+		PrinT("Нет локально файла, нечего выгружать \n")
+		// fmt.Printf("%v Нет локально файла, нечего выгружать \n", time.Now().Format("15:04:05"))
 		return 7, err
 	}
 	//Открываю файл для передачи на FTP
-	fmt.Printf("%v Загружаю на сервер файл %v\n", time.Now().Format("15:04:05"), LocalPath+FileOut)
+	PrinT("Загружаю на сервер файл %v\n")
+	// fmt.Printf("%v Загружаю на сервер файл %v\n", time.Now().Format("15:04:05"), LocalPath+FileOut)
 	source, err := os.Open(LocalPath + FileOut)
 	defer source.Close()
 	if err != nil {
-		fmt.Printf("%v Не удалось открыть файл на локальном ПК, его не существует или он занят другой программой\n", time.Now().Format("15:04:05"))
+		PrinT("Не удалось открыть файл на локальном ПК, его не существует или он занят другой программой\n")
+		PrinT("%v\n", err)
+		// fmt.Printf("%v Не удалось открыть файл на локальном ПК, его не существует или он занят другой программой\n", time.Now().Format("15:04:05"))
 		fmt.Printf("%v %v\n", time.Now().Format("15:04:05"), err)
 		return 7, err
 	}
@@ -208,20 +224,23 @@ func UploadFileToFTP(c *ftp.ServerConn, Path, LocalPath, FileOut string) (codeEx
 	return 0, nil
 }
 
+//checkUploadedFile check uploaded file on FTP
 func checkUploadedFile(c *ftp.ServerConn, Path, FileOut, LocalPath string) (int, error) {
 	//-----------------------------------------
 	/*Сравниваю размеры удаленного и локального файлов.
 	Если они равны, то переименовываем временный файл
 	*/
 	// Получаю информацию о локальном файле
-	fmt.Printf("%v Проверяю файл ", time.Now().Format("15:04:05"))
+	PrinT("Проверяю файл")
+	// fmt.Printf("%v Проверяю файл ", time.Now().Format("15:04:05"))
 	diff, err := GetDiffFilesSize(c, Path+FileOut, LocalPath+FileOut)
 	if err != nil {
 		fmt.Printf("... не удалось.\n %v\n", err)
 		return 6, err
 	}
 	if diff != 0 {
-		fmt.Printf("%v \nФайлы не совпадают. Удаляю файл на FTP.", time.Now().Format("15:04:05"))
+		PrinT("\nФайлы не совпадают. Удаляю файл на FTP.")
+		// fmt.Printf("%v \nФайлы не совпадают. Удаляю файл на FTP.", time.Now().Format("15:04:05"))
 		if err := c.Delete(Path + FileOut); err != nil {
 			fmt.Printf("Не удалось удалить %v . Удалите файл в ручную: %v\n", Path+FileOut, err)
 			return 6, err
@@ -267,26 +286,35 @@ func GetDiffFilesSize(c *ftp.ServerConn, fullNameFileOnFtp, fullNameLocalFile st
 	return diff, nil
 }
 
+//checkErrorCode - get Error code and print error massage
 func checkErrorCode(codeExit int) {
 	switch codeExit {
 	case 1:
-		fmt.Printf("%v Ошибка соединения\n", time.Now().Format("15:04:05"))
+		PrinT("Ошибка соединения\n")
+		// fmt.Printf("%v Ошибка соединения\n", time.Now().Format("15:04:05"))
 	case 2:
-		fmt.Printf("%v Не удалось открыть файл на FTP, его не существует или он занят другой программой\n", time.Now().Format("15:04:05"))
+		PrinT("Не удалось открыть файл на FTP, его не существует или он занят другой программой\n")
+		// fmt.Printf("%v Не удалось открыть файл на FTP, его не существует или он занят другой программой\n", time.Now().Format("15:04:05"))
 	case 3:
-		fmt.Printf("%v Не удалось скачать файл - Сетевая ошибка\n", time.Now().Format("15:04:05"))
+		PrinT("Не удалось скачать файл - Сетевая ошибка\n")
+		// fmt.Printf("%v Не удалось скачать файл - Сетевая ошибка\n", time.Now().Format("15:04:05"))
 	case 4:
 		fmt.Printf("%v Не удалось открыть локальный файл на запись, возможно он занят другой программой\n", time.Now().Format("15:04:05"))
 	case 5:
-		fmt.Printf("%v Запись файла не возможна\n", time.Now().Format("15:04:05"))
+		PrinT("Запись файла не возможна\n")
+		// fmt.Printf("%v Запись файла не возможна\n", time.Now().Format("15:04:05"))
 	case 6:
-		fmt.Printf("%v Ошибка проверки файла\n", time.Now().Format("15:04:05"))
+		PrinT("Ошибка проверки файла\n")
+		// fmt.Printf("%v Ошибка проверки файла\n", time.Now().Format("15:04:05"))
 	case 7:
-		fmt.Printf("%v Не удалось открыть локальный файл, его не существутет или он занят другой программой\n", time.Now().Format("15:04:05"))
+		PrinT("Не удалось открыть локальный файл, его не существутет или он занят другой программой\n")
+		// fmt.Printf("%v Не удалось открыть локальный файл, его не существутет или он занят другой программой\n", time.Now().Format("15:04:05"))
 	case 8:
-		fmt.Printf("%v Не известная ошибка\n", time.Now().Format("15:04:05"))
+		PrinT("Не известная ошибка\n")
+		// fmt.Printf("%v Не известная ошибка\n", time.Now().Format("15:04:05"))
 	case 9:
-		fmt.Printf("%v Не известная ошибка\n", time.Now().Format("15:04:05"))
+		PrinT("Не известная ошибка\n")
+		// fmt.Printf("%v Не известная ошибка\n", time.Now().Format("15:04:05"))
 	}
 }
 
