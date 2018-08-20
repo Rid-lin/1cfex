@@ -3,6 +3,7 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -58,7 +59,19 @@ func PrinT(format string, args ...interface{}) {
 	fmt.Printf(time.Now().Format("15:04:04") + " " + fmt.Sprintf(format, args...))
 }
 
-//LoadConfig - Load config
+//GetConfig - Get config from commandline
+func (s *ConfigAttr) GetConfig() {
+	flag.StringVar(&s.ServerPort, "ServerPort", "", "Сервер и порт к которому необходимо подключиться(например 10.57.254.103:21)")
+	flag.StringVar(&s.Login, "Login", "", "Логин для входа на сервер")
+	flag.StringVar(&s.Password, "Password", "", "Пароль для входа на сервер")
+	flag.StringVar(&s.Path, "Path", "", "Папка из которой будет браться файл с сервера")
+	flag.StringVar(&s.LocalPath, "LocalPath", "", "Локальная папка из которой будет браться файл для выгрузки на сервер")
+	flag.StringVar(&s.FileIn, "FileIn", "", "Файл для загрузки")
+	flag.StringVar(&s.FileOut, "FileOut", "", "Файл для выгрузки")
+	flag.Parse()
+}
+
+//LoadConfig - Load config from ini-file
 func (s *ConfigAttr) LoadConfig(nameFile string) {
 	PrinT("Загружаю настройки из %v", nameFile)
 	// fmt.Printf("%v Загружаю настройки из %v", time.Now().Format("15:04:05"), nameFile)
@@ -320,6 +333,8 @@ func checkErrorCode(codeExit int) {
 
 func main() {
 	intro()
+	// Смотрю есть ли данные в командной строке
+
 	// Получаю конфиг из файла
 	cfg.LoadConfig(configFileName)
 	c := ConnectToFTP(cfg.ServerPort, cfg.Login, cfg.Password, cfg.Path)
