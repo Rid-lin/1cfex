@@ -59,6 +59,7 @@ func PrinT(format string, args ...interface{}) {
 	fmt.Printf(time.Now().Format("15:04:04") + " " + fmt.Sprintf(format, args...))
 }
 
+//PrintOK Print OK
 func PrintOK() {
 	fmt.Printf("\t...\tOK\n")
 }
