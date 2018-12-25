@@ -13,7 +13,7 @@ import (
 	. "github.com/Rid-lin/tools/printime"
 	"github.com/go-ini/ini"
 	"github.com/jlaffaye/ftp"
-	pb "gopkg.in/cheggaaa/pb.v1"
+	pb "gopkg.in/cheggaaa/pb.v1" //Прогрессбар
 )
 
 var configExample = `#Пример конфигурационного файла
