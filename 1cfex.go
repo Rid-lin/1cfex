@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	. "github.com/Rid-lin/tools/printime"
 	"github.com/go-ini/ini"
 	"github.com/jlaffaye/ftp"
 	pb "gopkg.in/cheggaaa/pb.v1" //Прогрессбар
@@ -55,10 +54,10 @@ func intro() {
 `)
 }
 
-// //PrinT - Custom Printf with time
-// func PrinT(format string, args ...interface{}) {
-// 	fmt.Printf(time.Now().Format("15:04:04") + " " + fmt.Sprintf(format, args...))
-// }
+//PrinT - Custom Printf with time
+func PrinT(format string, args ...interface{}) {
+	fmt.Printf(time.Now().Format("15:04:04") + " " + fmt.Sprintf(format, args...))
+}
 
 //PrintOK Print OK
 func PrintOK() {
