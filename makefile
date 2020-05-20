@@ -6,4 +6,6 @@ build:
 .DUFAULT_GOAL := build
 
 pack:
-	"D:\root\Go\bin\upx.exe" --ultra-brute 1cfex.exe
+	upx.exe --ultra-brute 1cfex.exe
+
+deploy: build pack
