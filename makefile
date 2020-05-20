@@ -1,7 +1,7 @@
 .PHONY :build
 
 build:
-	go build -v ./
+	go build -o bin/1cfex.exe -v ./
 
 .DUFAULT_GOAL := build
 
