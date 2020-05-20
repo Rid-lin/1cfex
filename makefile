@@ -6,6 +6,6 @@ build:
 .DUFAULT_GOAL := build
 
 pack:
-	upx.exe --ultra-brute 1cfex.exe
+	upx.exe --ultra-brute bin/1cfex.exe
 
 deploy: build pack
