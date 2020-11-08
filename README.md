@@ -26,14 +26,14 @@
 
 Программа может также запускаться и с конфигурационным файлом 1cfex.ini , параметры совпадают с командной строкой.
 
-Вот его содержание 
-login_FTP = 
-pass_FTP = 
-path = 
-local_path = 
-server = 
-file_in = 
-file_out = 
+Вот его содержание
+login_FTP =
+pass_FTP =
+path =
+local_path =
+server =
+file_in =
+file_out =
 
 A simple program for periodic automatic exchange of files via FTP (developed for the exchange of 1C database files)
 
