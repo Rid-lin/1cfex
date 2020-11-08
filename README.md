@@ -28,13 +28,16 @@
 
 Вот его содержание
 
-  login_FTP =
-  pass_FTP =
-  path =
-  local_path =
-  server =
-  file_in =
-  file_out =
+``
+
+ login_FTP =
+ pass_FTP =
+ path =
+ local_path =
+ server =
+ file_in =
+ file_out =
+``
 
 A simple program for periodic automatic exchange of files via FTP (developed for the exchange of 1C database files)
 
@@ -64,10 +67,13 @@ The program can also be launched with the 1cfex.ini configuration file, the para
 
 Here is its content
 
-  login_FTP =
-  pass_FTP =
-  path =
-  local_path =
-  server =
-  file_in =
-  file_out =
+``
+
+ login_FTP =
+ pass_FTP =
+ path =
+ local_path =
+ server =
+ file_in =
+ file_out =
+``
