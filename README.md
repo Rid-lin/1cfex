@@ -26,14 +26,16 @@
 
 Программа может также запускаться и с конфигурационным файлом 1cfex.ini , параметры совпадают с командной строкой.
 
-Вот его содержание 
-login_FTP = 
-pass_FTP = 
-path = 
-local_path = 
-server = 
-file_in = 
-file_out = 
+Вот его содержание
+
+    login_FTP =
+    pass_FTP =
+    path =
+    local_path =
+    server =
+    file_in =
+    file_out =
+
 
 A simple program for periodic automatic exchange of files via FTP (developed for the exchange of 1C database files)
 
@@ -51,21 +53,22 @@ Program completion codes:
 
 Command line parameters can be viewed by typing 1cfex.exe -h in the console
 
-- * -FileIn * - File to upload to the server
-- * -FileOut * - File to upload from the server
-- * -LocalPath * - Local folder from which the file will be taken for uploading to the server (by default "C: / ftpswap / LocalObmenUAT /")
-- * -Login * - Login to enter the server (by default "kust")
-- * -Password * - Password for entering the server
-- * -Path * - The folder from which the file will be taken from the server (by default "/ srv / 1cv8 / uat /")
-- * -ServerPort * - Server and port to which you need to connect (for example 10.57.254.103:21) (default "10.57.254.103:21")
+- *-FileIn* - File to upload to the server
+- *-FileOut* - File to upload from the server
+- *-LocalPath* - Local folder from which the file will be taken for uploading to the server (by default "C: / ftpswap / LocalObmenUAT /")
+- *-Login* - Login to enter the server (by default "kust")
+- *-Password* - Password for entering the server
+- *-Path* - The folder from which the file will be taken from the server (by default "/ srv / 1cv8 / uat /")
+- *-ServerPort* - Server and port to which you need to connect (for example 10.57.254.103:21) (default "10.57.254.103:21")
 
 The program can also be launched with the 1cfex.ini configuration file, the parameters are the same as the command line.
 
 Here is its content
-login_FTP =
-pass_FTP =
-path =
-local_path =
-server =
-file_in =
-file_out =
+
+    login_FTP =
+    pass_FTP =
+    path =
+    local_path =
+    server =
+    file_in =
+    file_out =
